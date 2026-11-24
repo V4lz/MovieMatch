@@ -1,0 +1,42 @@
+# Plantilla inicial: completar versiones, volúmenes y configuración
+# después de acordar las versiones de cada motor.
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: moviematch-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  cassandra:
+    image: cassandra:latest
+    container_name: moviematch-cassandra
+    ports:
+      - "9042:9042"
+    environment:
+      CASSANDRA_CLUSTER_NAME: MovieMatchCluster
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+
+  dgraph-zero:
+    image: dgraph/dgraph:latest
+    container_name: moviematch-dgraph-zero
+    command: dgraph zero
+    ports:
+      - "5080:5080"
+      - "6080:6080"
+
+  dgraph-alpha:
+    image: dgraph/dgraph:latest
+    container_name: moviematch-dgraph-alpha
+    command: dgraph alpha --my= dgraph-alpha:7080 --zero=dgraph-zero:5080
+    ports:
+      - "8080:8080"
+      - "9080:9080"
+    depends_on:
+      - dgraph-zero
+
+volumes:
+  mongodb_data:
+  cassandra_data:
