@@ -1,0 +1,7 @@
+# Agregar aquí las dependencias y versiones acordadas por el equipo.
+# Ejemplos (descomentar cuando se decida la versión):
+# pymongo
+# pydgraph
+# cassandra-driver
+# chromadb
+# python-dotenv
