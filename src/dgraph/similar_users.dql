@@ -1,0 +1,8 @@
+  similar_users(func: uid(similar), orderdesc: val(sharedCount)) {
+    user_id
+    shared_count: val(sharedCount)
+    shared_titles: rated @filter(uid(liked)) @facets(ge(score, 4)) {
+      movie_id
+      title_name
+    }
+  }

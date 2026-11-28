@@ -1,0 +1,10 @@
+query reverse($user: string, $genre: string) {
+  accounts(func: eq(user_id, $user)) {
+    user_id
+    followers: ~follows { user_id }
+  }
+  genres(func: eq(genre_name, $genre)) {
+    genre_name
+    titles: ~has_genre { movie_id title_name }
+  }
+}

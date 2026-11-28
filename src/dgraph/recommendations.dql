@@ -1,0 +1,14 @@
+    movie_id
+    title_name
+    similar_user_count: val(votes)
+    genres: has_genre {
+      genre_name
+    }
+    recommended_by: ~rated @filter(uid(similar)) @facets(ge(score, 4)) @facets(score) {
+      user_id
+      shared_titles: rated @filter(uid(liked)) @facets(ge(score, 4)) {
+        movie_id
+        title_name
+      }
+    }
+  }
