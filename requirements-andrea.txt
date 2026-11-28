@@ -1,3 +1,0 @@
-cassandra-driver>=3.29,<4
-pydgraph>=24.1,<25
-python-dotenv>=1,<2
