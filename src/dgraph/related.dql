@@ -1,0 +1,15 @@
+query related($movie: string) {
+  var(func: eq(movie_id, $movie)) {
+    ~rated @facets(ge(score, 4)) {
+      oneRater as math(1)
+      rated @filter(NOT eq(movie_id, $movie)) @facets(ge(score, 4)) {
+        sharedRaters as math(oneRater)
+      }
+    }
+  }
+  related_titles(func: uid(sharedRaters), orderdesc: val(sharedRaters)) {
+    movie_id
+    title_name
+    shared_rater_count: val(sharedRaters)
+  }
+}

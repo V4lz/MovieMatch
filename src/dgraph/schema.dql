@@ -1,0 +1,21 @@
+type User {
+  user_id
+  rated
+  follows
+}
+type Title {
+  movie_id
+  title_name
+  has_genre
+}
+type Genre {
+  genre_name
+}
+
+user_id: string @index(exact) @upsert .
+movie_id: string @index(exact) @upsert .
+title_name: string .
+genre_name: string @index(exact) @upsert .
+rated: [uid] @reverse .
+follows: [uid] @reverse .
+has_genre: [uid] @reverse .

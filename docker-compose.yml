@@ -10,33 +10,39 @@ services:
       - mongodb_data:/data/db
 
   cassandra:
-    image: cassandra:latest
+    image: cassandra:4.1
     container_name: moviematch-cassandra
     ports:
-      - "9042:9042"
+      - "127.0.0.1:9042:9042"
     environment:
       CASSANDRA_CLUSTER_NAME: MovieMatchCluster
     volumes:
       - cassandra_data:/var/lib/cassandra
 
   dgraph-zero:
-    image: dgraph/dgraph:latest
+    image: dgraph/dgraph:v24.1.0
     container_name: moviematch-dgraph-zero
-    command: dgraph zero
+    volumes:
+      - dgraph_zero_data:/dgraph
+    command: dgraph zero --my=dgraph-zero:5080
     ports:
-      - "5080:5080"
-      - "6080:6080"
+      - "127.0.0.1:5080:5080"
+      - "127.0.0.1:6080:6080"
 
   dgraph-alpha:
-    image: dgraph/dgraph:latest
+    image: dgraph/dgraph:v24.1.0
     container_name: moviematch-dgraph-alpha
-    command: dgraph alpha --my= dgraph-alpha:7080 --zero=dgraph-zero:5080
+    volumes:
+      - dgraph_alpha_data:/dgraph
+    command: dgraph alpha --my=dgraph-alpha:7080 --zero=dgraph-zero:5080 --security whitelist=172.16.0.0/12
     ports:
-      - "8080:8080"
-      - "9080:9080"
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:9080:9080"
     depends_on:
       - dgraph-zero
 
 volumes:
   mongodb_data:
   cassandra_data:
+  dgraph_zero_data:
+  dgraph_alpha_data:

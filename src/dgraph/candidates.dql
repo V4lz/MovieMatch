@@ -1,0 +1,6 @@
+  var(func: uid(similar)) {
+    oneUser as math(1)
+    rated @filter(NOT uid(alreadyRated)) @facets(ge(score, 4)) {
+      votes as math(oneUser)
+    }
+  }

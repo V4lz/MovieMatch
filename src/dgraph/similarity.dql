@@ -1,0 +1,9 @@
+  var(func: eq(user_id, $user)) {
+    liked as rated @facets(ge(score, 4)) {
+      oneTitle as math(1)
+      ~rated @filter(NOT eq(user_id, $user)) @facets(ge(score, 4)) {
+        sharedCount as math(oneTitle)
+      }
+    }
+  }
+  similar as var(func: uid(sharedCount)) @filter(ge(val(sharedCount), 2))
